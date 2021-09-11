@@ -11,6 +11,8 @@ import Middle from "./Components/Middle";
 import Leftside from "./Components/Leftside";
 import Topbar from "./Components/Topbar";
 import Profile from "./Components/Profile";
+import { Provider } from "react-redux";
+import { ConfigureStore } from "./Redux/Configurestore";
 const useStyles =makeStyles(theme=>({
   bt:{
     display:"flex",

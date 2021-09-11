@@ -17,8 +17,9 @@ const useStyles = makeStyles(theme=>({
         display:"flex",
         justifyContent:"space-between",
     }
-}))
-export default function Post() {
+}));
+
+ function Post({info}) {
     const classes=useStyles();
     return (
         <>
@@ -33,15 +34,15 @@ export default function Post() {
             <MoreVertIcon/>
           </IconButton>
         }
-        title="Shrimp and Chorizo Paella"
+        title={info?.title&&"hellow"}
         subheader="September 14, 2016"
       />
       
       <CardContent>
-        <Typography variant="body2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae repellat error, fugit omnis nesciunt consectetur velit doloribus modi culpa tenetur fugiat. Commodi sint possimus quo iste nostrum soluta voluptates labore.</Typography>
+        <Typography variant="body2">{info?.description&&"pankaj"}</Typography>
                 </CardContent>
       <CardMedia 
-      image="https://www.pexels.com/photo/person-wearing-white-dress-shirt-1181725/" style={{height:"200px"}}/>
+      image={info?.image}style={{height:"600px",objectFit:"contain"}}/>
       <CardContent style={{width:"100%"}}>
           <IconButton>
               <LocalActivity/>
@@ -59,3 +60,4 @@ export default function Post() {
         </>
     )
 }
+export default Post;
