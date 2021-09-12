@@ -9,7 +9,7 @@ const useStyles = makeStyles(theme=>({
         left:0,
         backgroundColor:theme.palette.background.paper,
         overflow:"auto",
-    maxHeight: "88vh",
+        maxHeight: "88vh",
     }
 }))
 export default function Leftside() {

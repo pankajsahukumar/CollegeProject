@@ -1,9 +1,9 @@
-import { Hidden, makeStyles, Toolbar } from '@material-ui/core'
+import { Hidden, makeStyles} from '@material-ui/core'
 import React from 'react'
 import Leftside from '../Components/Leftside'
 import Middle from '../Components/Middle'
 import Rightbar from '../Components/Rightbar'
-import Topbar from '../Components/Topbar'
+import Messanger from './Messanger'
 const useStyles =makeStyles(theme=>({
     bt:{
       display:"flex",
@@ -16,17 +16,21 @@ const useStyles =makeStyles(theme=>({
  
 export default function Home(props) {
     const classes = useStyles();
-    
+    const nishant =()=>{
+return (
+  <>
+  <div className={classes.bt}>
+      <Hidden smDown>
+      <Leftside/>
+      </Hidden>
+      <Middle/>
+      <Hidden smDown>
+      <Rightbar/>
+      </Hidden></div>   
+      </>
+)
+    }
     return (
-        <>
-         <div className={classes.bt}>
-             <Hidden smDown>
-             <Leftside/>
-             </Hidden>
-             <Middle/>
-             <Hidden smDown>
-             <Rightbar/>
-             </Hidden></div>   
-        </>
+     <Messanger/>   
     )
 }
