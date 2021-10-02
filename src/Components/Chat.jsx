@@ -37,7 +37,7 @@ export default function Chat(props) {
         <Avatar>A</Avatar>
           <Paper className={classes.paper} square>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat iure molestias non! Vitae in porro praesentium culpa expedita! At cumque voluptas commodi libero non reiciendis voluptates, rerum quisquam maxime aspernatur vitae molestiae beatae est pariatur placeat illo dolores. Facere, culpa inventore ratione, delectus maiores aliquam vel deserunt a vero, esse eveniet beatae. Quam mollitia sapiente et, nisi libero aspernatur ratione facilis suscipit optio? Vel itaque at natus quasi voluptas delectus magnam distinctio architecto commodi eius ratione debitis velit provident soluta pariatur exercitationem vero, ut incidunt cumque mollitia sit dolor? Quasi quo ipsam corrupti. Nobis cum impedit magnam hic, mollitia modi!
-              <span className={classes.time}>9:40Pm</span>
+          <span className={classes.time}>9:40Pm</span>
           </Paper>  
           </div>
           </Container>

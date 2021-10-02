@@ -6,43 +6,20 @@ import {
   Redirect
 } from "react-router-dom";
 import { makeStyles } from "@material-ui/styles";
-import Home from "./pages/Home";
-import Middle from "./Components/Middle";
-import Leftside from "./Components/Leftside";
-import Topbar from "./Components/Topbar";
-import Profile from "./Components/Profile";
-import { Provider } from "react-redux";
-import { ConfigureStore } from "./Redux/Configurestore";
-const useStyles =makeStyles(theme=>({
-  bt:{
-    display:"flex",
-  }
-}));
+import './App.css';
+import NavBar from "./Components/Navbar";
+import Routers from "./Components/Routers";
+
 function App() {
- const classes = useStyles();
+ 
   return (
     <Router>
       <CssBaseline/>
-      <Topbar/>
+      <NavBar/>
       <Switch>
-        <Redirect exact from="/home" to="/home/about"/>
-        <Route path="/home/profile">
-          <div className={classes.bt}>
-            <Leftside/>
-          <Middle/>
-          </div>
-        </Route>
-        <Route path="/home/about">
-          <div className={classes.bt}>
-         <Hidden smDown>
-          <Leftside/>
-          </Hidden>
-
-          <Profile/>
-          </div>
-          
-        </Route>
-        <Route path="/home/:page?" render={props =><Home {...props}/>}/>
+        <div className="pages">
+        <Routers/>
+          </div> 
       </Switch>
     </Router>
   );

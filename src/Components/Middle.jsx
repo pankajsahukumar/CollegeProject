@@ -9,7 +9,6 @@ const useStyles = makeStyles(theme=>({
     Middle:{
         flex:6,
     },
-   
 }))
 export default function Middle() {
     const classes = useStyles();

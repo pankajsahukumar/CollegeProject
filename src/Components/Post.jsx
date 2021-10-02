@@ -4,10 +4,9 @@ import MoreVertIcon from '@material-ui/icons/MoreVert'
 import { LocalActivity } from '@material-ui/icons';
 const useStyles = makeStyles(theme=>({
     cardaction:{
-        width:"100%",
-        display:"flex",
-        justifyContent:"space-around"
-
+      width:"100%",
+      display:"flex",
+      justifyContent:"space-around"
     },
     card:{
         margin:theme.spacing(2),

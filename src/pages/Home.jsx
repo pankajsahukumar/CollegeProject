@@ -16,9 +16,8 @@ const useStyles =makeStyles(theme=>({
  
 export default function Home(props) {
     const classes = useStyles();
-    const nishant =()=>{
+    function Nishant(){
 return (
-  <>
   <div className={classes.bt}>
       <Hidden smDown>
       <Leftside/>
@@ -27,10 +26,9 @@ return (
       <Hidden smDown>
       <Rightbar/>
       </Hidden></div>   
-      </>
 )
     }
     return (
-     <Messanger/>   
+     <Messanger/>  
     )
 }

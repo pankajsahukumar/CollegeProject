@@ -9,15 +9,14 @@ const useStyles = makeStyles(theme=>({
         left:0,
         backgroundColor:theme.palette.background.paper,
         overflow:"auto",
-        maxHeight: "88vh",
+        maxHeight: `calc(100vh - 70px)`,
     }
 }))
 export default function Leftside() {
     const classes = useStyles();
     return (
         <div className={classes.left}>
-            <List>
-                
+      <List>
       <ListItem>
         <ListItemAvatar>
           <Avatar>
