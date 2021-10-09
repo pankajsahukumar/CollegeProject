@@ -1,5 +1,5 @@
-import { Paper,makeStyles, InputBase, TextareaAutosize, Hidden, Avatar } from '@material-ui/core'
-import React from 'react'
+import { Paper,makeStyles, InputBase, TextareaAutosize, Hidden, Avatar, Button } from '@material-ui/core'
+import React, { useState } from 'react'
 import Chat from './Chat';
 import Leftside from './Leftside';
 const useStyles = makeStyles(theme=>({
@@ -36,6 +36,12 @@ paper2:{
 }));
 export const ChatComponents = () => {
     const classes = useStyles();
+    const [msg, setMsg] = useState("");
+    const [Megs, setMegs] = useState([]);
+    const apend =()=>{
+        setMegs((prev)=>[...prev,msg]);
+        setMsg('');
+    }
     return (
         <div className={classes.container}>
         <Hidden smDown>
@@ -43,6 +49,7 @@ export const ChatComponents = () => {
         </Hidden>
         <div className={classes.chatareawrappper}>
           <Paper className={classes.paper}>
+              
               <Chat show={false}/>
               <Chat show={true}/>
               <Chat show={false}/>
@@ -55,10 +62,13 @@ export const ChatComponents = () => {
               <Chat show={true}/>
               <Chat show={false}/>
               <Chat show={true}/>
+              {Megs.map((item)=>{
+                  return(<Chat show={false} msg={item}/>)
+              })}
          </Paper>
          <Paper className={classes.paper2} square> 
-         <TextareaAutosize aria-label="minimum height" minRows={1} maxRows={2} className={classes.texarea} placeholder="Minimum 3 rows" /> 
-         <Avatar/></Paper> </div>
+         <TextareaAutosize aria-label="minimum height" value={msg} onChange={(e)=>setMsg(e.target.value)} minRows={1} maxRows={2} className={classes.texarea} placeholder="Minimum 3 rows" /> 
+         <Button onClick={apend}>send</Button></Paper> </div>
         </div>
     )
 }

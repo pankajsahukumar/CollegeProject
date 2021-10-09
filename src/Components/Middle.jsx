@@ -15,9 +15,11 @@ export default function Middle() {
     const dispatch = useDispatch();
  useEffect(() => {
      dispatch(createPost());
- }, [])
+     console.log(JSON.parse(JSON.parse(localStorage.getItem('persist:root')).post));
+ }, []);
  
  const {postInfo,pending,error} = useSelector(state => state.post);
+ 
     return (
         <div className={classes.Middle}>
         {postInfo?.map(data=>{

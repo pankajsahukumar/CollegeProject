@@ -12,18 +12,18 @@ const useStyles = makeStyles(theme=>({
         maxHeight: `calc(100vh - 70px)`,
     }
 }))
-export default function Leftside() {
+export default function Chatleft() {
     const classes = useStyles();
     return (
         <div className={classes.left}>
       <List>
-      <ListItem button onClick={(e)=>{alert("this is pankaj")}}>
+      <ListItem>
         <ListItemAvatar>
           <Avatar>
             L
           </Avatar>
         </ListItemAvatar>
-        <ListItemText primary="Photos" secondary="Jan 9, 2014" />
+        <ListItemText primary="Photos"/>
       </ListItem>
       <ListItem>
         <ListItemAvatar>

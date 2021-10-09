@@ -20,7 +20,6 @@ const postSlice =createSlice({
             state.pending=true;
         },
         [createPost.fulfilled]:(state,action)=>{
-            console.log(action);
             state.postInfo=action.payload;
             state.error=false;
         },

@@ -1,12 +1,13 @@
 import React, { useState } from "react";
+import {useSelector} from 'react-redux'
 import { NavLink } from "react-router-dom";
 import "./Navbar.css";
-import { Avatar, Toolbar,AppBar } from "@material-ui/core";
+import { Avatar, Toolbar,AppBar,Typography } from "@material-ui/core";
 import { ClearRounded, DehazeRounded } from "@material-ui/icons";
 
 function NavBar() {
   const [clicked, setClicked] = useState(false);
-
+ const islogin = useSelector(state => state.user2.islogin);
   const handleClick = () => {
     setClicked(!clicked);
   };
@@ -17,7 +18,8 @@ function NavBar() {
         <div className="nav-container">
           <NavLink exact to='#' className="nav-logo">
             {/* <i className="fas fa-code"></i> */}
-            <Avatar/>
+            {islogin?<Avatar to='/about'/>:<Typography 
+            component="h1" variant='h6'>Pankaj</Typography>}
           </NavLink>
 
           <ul className={clicked ? "nav-menu active" : "nav-menu"}>
@@ -55,7 +57,15 @@ function NavBar() {
               </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink
+              {islogin?<NavLink
+                exact
+                to="/home"
+                activeClassName="active"
+                className="nav-links"
+                onClick={handleClick}
+              >
+                Messanger
+              </NavLink>:<NavLink
                 exact
                 to="/login"
                 activeClassName="active"
@@ -63,10 +73,11 @@ function NavBar() {
                 onClick={handleClick}
               >
                 Login
-              </NavLink>
+              </NavLink>}
+              
             </li>
             <li className="nav-item">
-              <NavLink
+            {!islogin&&<NavLink
                 exact
                 to="/register"
                 activeClassName="active"
@@ -74,7 +85,8 @@ function NavBar() {
                 onClick={handleClick}
               >
                 Register
-              </NavLink>
+              </NavLink>}
+              
             </li>
           </ul>
           <div className="menu-icon" onClick={handleClick}>
