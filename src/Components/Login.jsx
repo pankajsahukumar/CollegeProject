@@ -1,11 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { publicRequest } from '../redux2/requestMethods';
-import { login } from '../redux2/apiCalls/userapi';
+import { login} from '../redux2/apiCalls/userapi';
 import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
 
+import {toast} from 'react-toastify'; 
+  
+// Import toastify css file
+import 'react-toastify/dist/ReactToastify.css'; 
+import { loginuser, update } from '../redux2/Slices/userSlice';
+  
+toast.configure()
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
@@ -30,12 +38,19 @@ const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
+  const history= useHistory();
+  const islogin=useSelector(state => state.user2.islogin);
   const handleSubmit =(e)=>{
  e.preventDefault();
  const user={email,password};
-   login(dispatch,user);
-  }
-
+     login(dispatch,user);
+   if(islogin){
+     toast.success("Successfully");
+     history.push('/home');
+   }else{
+     toast.error("error");
+   }
+    }
   return (
     <form className={classes.root} onSubmit={handleSubmit}>
       
@@ -60,6 +75,7 @@ const LoginForm = () => {
           Signup
         </Button>
       </div>
+
     </form>
   );
 };

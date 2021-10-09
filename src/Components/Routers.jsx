@@ -8,6 +8,7 @@ import { Redirect, Route } from 'react-router';
 import Rightbar from './Rightbar';
 import Form from './Register';
 import LoginForm from './Login';
+import { useSelector } from 'react-redux';
 const useStyles =makeStyles(theme=>({
     bt:{
       display:"flex",
@@ -16,33 +17,41 @@ const useStyles =makeStyles(theme=>({
   }));
 export default function Routers() {
     const classes = useStyles();
-    
+    const islogin = useSelector(state => state.user2.islogin)
     return (
         <>
-         <Redirect exact from="/" to="/home"/>
-        <Route path="/profile">
-          <div className={classes.bt}>
+        <Route path="/home">
+          {islogin?<div className={classes.bt}>
+
            <Leftside/>
             <Middle/>
             <Rightbar/>
-            </div>
-        </Route>
-        <Route path="/about">
-          <div className={classes.bt}>
-            
+          </div>:<Redirect to='/login'/>}
+        </Route> 
+        <Route path="/profile">
+          {islogin?<div className={classes.bt}>
          <Hidden smDown>
           <Leftside/>
           </Hidden>
           <Profile/>
-          </div>          
+          </div>
+          :<Redirect to='/login'/>}          
         </Route>
-        <Route path="/register" >
+
+        {islogin?
+        <>
+        <Route path='/messanger'>
+          <Home/>
+        </Route>
+        </>
+  :<Redirect to='/register'/>}
+          <Route path='/register'>
           <Form/>
-        </Route>
-        <Route path="/login">
-          <LoginForm/>
-        </Route>
-        <Route path="/home" render={props =><Home {...props}/>}/>    
+          </Route>
+          <Route path='/login'>
+            <LoginForm/>
+          </Route>
+          <Redirect to='/home'/>
         </>
     )
 }

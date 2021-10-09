@@ -33,7 +33,7 @@ const Form = () => {
   const classes = useStyles();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [Fname,setFname]=useState('');
+  const [fname,setFname]=useState('');
   const [values, setValues] = useState({});
   const handleonchange=(e)=>{
   setValues((values)=>({...values,[e.target.name]:e.target.value}));
@@ -75,7 +75,7 @@ const registeruser=async(user)=>{
         label="Email"
         variant="filled"
         type="email"
-        name="firstname"
+        name="email"
         required
         value={values.email||""}
         onChange={handleonchange}

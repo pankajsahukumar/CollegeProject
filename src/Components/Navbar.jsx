@@ -1,17 +1,41 @@
 import React, { useState } from "react";
 import {useSelector} from 'react-redux'
-import { NavLink } from "react-router-dom";
+import { NavLink,useHistory } from "react-router-dom";
 import "./Navbar.css";
-import { Avatar, Toolbar,AppBar,Typography } from "@material-ui/core";
+import { Avatar, Toolbar,AppBar,Typography, Box, Modal } from "@material-ui/core";
 import { ClearRounded, DehazeRounded } from "@material-ui/icons";
-
+import { useDispatch } from "react-redux";
+import { LogOut } from "../redux2/apiCalls/userapi";
+import { toast } from "react-toastify";
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 function NavBar() {
+  const [open,setOpen]=useState(false);
   const [clicked, setClicked] = useState(false);
  const islogin = useSelector(state => state.user2.islogin);
+ const history =useHistory();
+ const dispatch=useDispatch();
   const handleClick = () => {
     setClicked(!clicked);
   };
-  const logo = "Cod{on}fest"
+
+  const handleClose=()=>{
+    console.log("how");
+  }
+  const hanglelogout=()=>{
+  LogOut(dispatch);
+  toast.success("Successfully Logout");
+   history.push('/about');
+  }
   return (
     <>
       <nav className="navbar">
@@ -34,15 +58,16 @@ function NavBar() {
                 Home
               </NavLink>
             </li>
+            {islogin&&<>
             <li className="nav-item">
               <NavLink
                 exact
                 to="/about"
                 activeClassName="active"
                 className="nav-links"
-                onClick={handleClick}
+                onClick={()=>setOpen(!open)}
               >
-                Chat
+                Create Post
               </NavLink>
             </li>
             <li className="nav-item">
@@ -55,11 +80,11 @@ function NavBar() {
               >
                 Profile
               </NavLink>
-            </li>
+            </li></>}
             <li className="nav-item">
               {islogin?<NavLink
                 exact
-                to="/home"
+                to="/messanger"
                 activeClassName="active"
                 className="nav-links"
                 onClick={handleClick}
@@ -77,7 +102,7 @@ function NavBar() {
               
             </li>
             <li className="nav-item">
-            {!islogin&&<NavLink
+            {!islogin?<NavLink
                 exact
                 to="/register"
                 activeClassName="active"
@@ -85,7 +110,12 @@ function NavBar() {
                 onClick={handleClick}
               >
                 Register
-              </NavLink>}
+              </NavLink>:<NavLink 
+              exact
+            to='/login'
+          activeClassName="active"
+        className="nav-links"
+          onClick={hanglelogout}>Logout</NavLink>}
               
             </li>
           </ul>
@@ -94,6 +124,22 @@ function NavBar() {
       </div>
         </div>
         </nav>
+        <Modal
+        open={open}
+        onClose={()=>{setOpen(!open)
+        history.push('/home')}}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Create your Post
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+          </Typography>
+        </Box>
+      </Modal>
     </>
   );
 }

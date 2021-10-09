@@ -1,10 +1,8 @@
 import {createAsyncThunk, createSlice,} from "@reduxjs/toolkit";
-import axios from "axios";
-export const loginuser = createAsyncThunk('user/login',async(user)=>{
-    const res= await axios.post('https://fakestoreapi.com/auth/login',user);
-    const newdata = {...user,...res.data};
-
-    return res.data; 
+import { publicRequest } from "../requestMethods";
+export const loginuser = createAsyncThunk('login',async(user)=>{
+    const res= await publicRequest.post('Auth/Login',user);
+    return res.data;
 });
  const userSlice =createSlice({
     name:"user",
@@ -12,16 +10,14 @@ export const loginuser = createAsyncThunk('user/login',async(user)=>{
         userInfo:null,
         pending:null,
         error:false,
+        islogin:false,
     },
     reducers:{
       update:(state,action)=>{
        state=action.payload;
-       console.log("update");
       },
       remove:(state)=>{
           console.log("this is remove");
-          state.email="";
-          state.name="none";
       }
     },
     extraReducers:{
@@ -31,6 +27,7 @@ export const loginuser = createAsyncThunk('user/login',async(user)=>{
         [loginuser.fulfilled]:(state,action)=>{
             state.pending=false;
             state.userInfo=action.payload;
+            state.islogin=true;
             },
         [loginuser.rejected]:(state)=>{
             state.pending=null;

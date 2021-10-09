@@ -1,17 +1,12 @@
-import {createAsyncThunk, createSlice, isRejectedWithValue } from "@reduxjs/toolkit";
+import { createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
-export const loginuser = createAsyncThunk('user/login',async(user)=>{
-    const res= await axios.post('https://fakestoreapi.com/auth/login',user);
-    const newdata = {...user,...res.data};
-    localStorage.setItem('token',res.data.token);
-    return res.data; 
-});
+
  const userSlice =createSlice({
     name:"user",
     initialState:{
         currentUser:null,
         pending:null,
-        error:false,
+        error:null,
         islogin:false,
     },
     reducers:{
@@ -26,9 +21,15 @@ export const loginuser = createAsyncThunk('user/login',async(user)=>{
       loginFailure:(state)=>{
       state.pending=false;
       state.error=true;
+      state.islogin=false;
       },
+      logOut:(state)=>{
+          state.currentUser=null;
+          state.islogin=false;
+          localStorage.removeItem('persist:root');
+      }
     },
 });
 
-export const {loginStart,loginSuccess,loginFailure} = userSlice.actions;
+export const {loginStart,loginSuccess,loginFailure,logOut} = userSlice.actions;
 export default userSlice.reducer;
