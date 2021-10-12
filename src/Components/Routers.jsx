@@ -9,10 +9,13 @@ import Rightbar from './Rightbar';
 import Form from './Register';
 import LoginForm from './Login';
 import { useSelector } from 'react-redux';
+import CreatePost from './CreatePost';
+import Profileupdate from './Profileupdate';
 const useStyles =makeStyles(theme=>({
     bt:{
       display:"flex",
       position:"relative",
+      gap:theme.spacing(4),
     }
   }));
 export default function Routers() {
@@ -34,6 +37,7 @@ export default function Routers() {
           <Leftside/>
           </Hidden>
           <Profile/>
+          <Rightbar />
           </div>
           :<Redirect to='/login'/>}          
         </Route>
@@ -42,6 +46,21 @@ export default function Routers() {
         <>
         <Route path='/messanger'>
           <Home/>
+        </Route>
+        </>
+  :<Redirect to='/register'/>}
+  
+  {islogin?
+        <>
+        <Route path='/createpost'>
+          <CreatePost/>
+        </Route>
+        </>
+  :<Redirect to='/register'/>}
+  {islogin?
+        <>
+        <Route path='/editprofile'>
+          <Profileupdate/>
         </Route>
         </>
   :<Redirect to='/register'/>}

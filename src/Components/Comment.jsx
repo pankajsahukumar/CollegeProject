@@ -12,11 +12,12 @@ const usestyles=makeStyles((theme)=>({
 ));
 export default function Comment(props) {
   const classes =usestyles();
+
     return (
         <div>
             <Typography paragraph className={classes.title}>Pankaj<span className={classes.time}>10pm</span></Typography>
-          <Typography paragraph>
-            {props?.data.comment}
+          <Typography variant="body2">
+          {props.data.postmessage}
           </Typography>
           
         </div>

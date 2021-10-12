@@ -2,17 +2,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import {
   Avatar,
   CardMedia,
-  Collapse,
   Paper,
-  Typography,
+  Typography
 } from "@material-ui/core";
-import React, { useState } from "react";
-import Post from "./Post";
-import Rightbar from "./Rightbar";
-import { TransitionGroup } from "react-transition-group";
+import React, { useEffect, useState } from "react";
 import Post2 from "./Post2";
-import { login } from "../redux2/apiCalls/userapi";
-import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { publicRequest } from "../redux2/requestMethods";
 const useStyles = makeStyles((theme) => ({
   cardmain: { flex: 5 },
   card: {
@@ -40,11 +36,33 @@ const useStyles = makeStyles((theme) => ({
 }));
 export default function Profile() {
   const classes = useStyles();
-  const [arr,setArr]=useState([1,2,3,4,5,6,7]);
+  const [post,setPost]=useState([]);
+  const state = useSelector(state => state.user2.currentUser);
   const ondelete=(id)=>{
-     setArr((prev) => [...prev.filter((i) => i !== id)]);
+    console.log(id);
+    const deletepost=async()=>{
+      await publicRequest.delete(`post/${id}`,
+      {data: {
+        userId: state.user._id
+      }});
+     setPost((prev)=>[...prev.filter(item=> item._id!==id)]);
+    }
+    deletepost();
   }
+   useEffect(()=>{
+     const getpost =async()=>{
+       try{
+      const  res=await publicRequest.get(`/post/${state.user._id}/allpost`);
+        setPost(res.data.sort((a,b)=>{
+          return new Date(a.createdAt)-new Date(b.createdAt);
+        }));
 
+       }catch(err){
+         console.log(err);
+       }
+    }
+    getpost();
+   },[state.user]);
   return (
     <div className={classes.cardmain}>
       <Paper elevation={3} className={classes.card}>
@@ -53,23 +71,22 @@ export default function Profile() {
           image="https://images.pexels.com/photos/7235677/pexels-photo-7235677.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
         />
         <div className={classes.pt}>
-          <Avatar className={classes.avatar} />
+          <Avatar className={classes.avatar} src="https://images.pexels.com/photos/7235677/pexels-photo-7235677.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
+        />
           <Typography component="h2" variant="h6">
-            Pankaj
+            {state.user.email}
           </Typography>
         </div>
+      
       </Paper>
       <div style={{ display: "flex" }}>
         <div>
-          <TransitionGroup>
-                {arr.map(item=>{
-                    return(<Collapse key={item}>
-                    <Post2 delete={ondelete} id={item}/>
-                    </Collapse>)
+                {post.map(item=>{
+                    return(
+                    <Post2 id={item} delete={ondelete}data={item} key={item._id}/>)
                 })}
-             </TransitionGroup>
+  
                  </div>
-        <Rightbar />
       </div>
     </div>
   );

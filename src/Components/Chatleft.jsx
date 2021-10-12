@@ -1,6 +1,7 @@
-import { Avatar, List, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core';
+import { Avatar,  ListItem, ListItemAvatar, ListItemText } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { publicRequest } from '../redux2/requestMethods';
 const useStyles = makeStyles(theme=>({
     left:{
         flex:"3",
@@ -12,147 +13,29 @@ const useStyles = makeStyles(theme=>({
         maxHeight: `calc(100vh - 70px)`,
     }
 }))
-export default function Chatleft() {
+export default function Chatleft(props) {
     const classes = useStyles();
-    return (
-        <div className={classes.left}>
-      <List>
-      <ListItem>
-        <ListItemAvatar>
-          <Avatar>
-            L
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary="Photos"/>
-      </ListItem>
-      <ListItem>
-        <ListItemAvatar>
-          <Avatar>
-            L
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary="Photos" secondary="Jan 9, 2014" />
-      </ListItem> <ListItem>
-        <ListItemAvatar>
-          <Avatar>
-            L
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary="Photos" secondary="Jan 9, 2014" />
-      </ListItem>
-      
-      <ListItem>
-        <ListItemAvatar>
-          <Avatar>
-            L
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary="Photos" secondary="Jan 9, 2014" />
-      </ListItem>
-      <ListItem>
-        <ListItemAvatar>
-          <Avatar>
-            L
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary="Photos" secondary="Jan 9, 2014" />
-      </ListItem> <ListItem>
-        <ListItemAvatar>
-          <Avatar>
-            L
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary="Photos" secondary="Jan 9, 2014" />
-      </ListItem>
-      
-      <ListItem>
-        <ListItemAvatar>
-          <Avatar>
-            L
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary="Photos" secondary="Jan 9, 2014" />
-      </ListItem>
-      <ListItem>
-        <ListItemAvatar>
-          <Avatar>
-            L
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary="Photos" secondary="Jan 9, 2014" />
-      </ListItem> <ListItem>
-        <ListItemAvatar>
-          <Avatar>
-            L
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary="Photos" secondary="Jan 9, 2014" />
-      </ListItem>
-      
-      <ListItem>
-        <ListItemAvatar>
-          <Avatar>
-            L
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary="Photos" secondary="Jan 9, 2014" />
-      </ListItem>
-      <ListItem>
-        <ListItemAvatar>
-          <Avatar>
-            L
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary="Photos" secondary="Jan 9, 2014" />
-      </ListItem> <ListItem>
-        <ListItemAvatar>
-          <Avatar>
-            L
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary="Photos" secondary="Jan 9, 2014" />
-      </ListItem>
-      <ListItem>
-        <ListItemAvatar>
-          <Avatar>
-            L
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary="Photos" secondary="Jan 9, 2014" />
-      </ListItem>
-      <ListItem>
-        <ListItemAvatar>
-          <Avatar>
-            L
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary="Photos" secondary="Jan 9, 2014" />
-      </ListItem>
-      <ListItem>
-        <ListItemAvatar>
-          <Avatar>
-            L
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary="Photos" secondary="Jan 9, 2014" />
-      </ListItem>
-      <ListItem>
-        <ListItemAvatar>
-          <Avatar>
-            L
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary="Photos" secondary="Jan 9, 2014" />
-      </ListItem>
-      <ListItem>
-        <ListItemAvatar>
-          <Avatar>
-            L
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary="Photos" secondary="Jan 9, 2014" />
-      </ListItem>
-            </List>
-        </div>
-    )
+    const[user, setUser] = useState({});
+    useEffect(() => {
+     const friendId = props.conv.members.find((m)=> m!== props.currentUser._id);
+     const getUser = async()=>{ 
+         try{
+         const res = await publicRequest.get('user/?userId='+friendId);
+         setUser(res.data);
+         }catch(err)
+         {
+             console.log(err);
+         }
+     }
+     getUser();
+    }, [props.currentUser,props.conv])
+    return (   
+    <ListItem button onClick={()=>{props.start(props.conv)}}>
+    <ListItemAvatar>
+      <Avatar src={user?.profilepic}>
+      </Avatar>
+    </ListItemAvatar>
+    <ListItemText primary={user.email}  />
+  </ListItem>
+          )
 }

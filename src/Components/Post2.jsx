@@ -17,10 +17,17 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { Button, InputBase } from '@material-ui/core';
 import Comment from './Comment';
+import { useSelector } from 'react-redux';
+import { publicRequest } from '../redux2/requestMethods';
+import { Delete } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    maxWidth: 345,
+    width:'600px',
+    margin:theme.spacing(3),
+  },
+  deletebtn:{
+   color:"red",
   },
   media: {
     height: 0,
@@ -44,37 +51,72 @@ const useStyles = makeStyles((theme) => ({
 
 export default function RecipeReviewCard(props) {
   const classes = useStyles();
+  const state = useSelector(state => state.user2.currentUser)
   const [expanded, setExpanded] = React.useState(false);
   const [comments,setComments]=useState([]);
   const [comment,setComment]=useState('');
  const [isLike, setisLike] = useState(false);
-//  useEffect(() => {
+ const handlelike=()=>{
+   const postlike=async()=>{
+      try{
+        const res=await publicRequest.put(`/post/${props.data._id}/like`,{"userId":state.user._id});
+        console.log(res);
+        setisLike(!isLike);
+      }catch(err){
+        console.log(err);
+      }
+   }
    
-//  }, [comments]);
-//  
+   postlike();
+ };
+ useEffect(()=>{
+   const data=props.data.postlike;
+   data.map(item=>{if(item===state.user._id){
+     setisLike(true);
+   }})
+ },[]);
  const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-  console.log(comment);
+ useEffect(()=>{
+   const getcomment=async()=>{
+     try{
+     const res= await publicRequest.get('/comment/'+props.data._id);
+     setComments(res.data);
+     }catch(err){
+       console.log(err);
+     }
+   }
+   getcomment();
+ },[]);
   const Add =()=>{
-      setComments((prev)=>[...prev,{"comment":comment}]);
-      setComment('');
-      console.log(comments);
+    setComments((prev)=>[...prev,{"postmessage":comment}]);
+     const postcomment =async()=>{
+       try{
+         const comm ={"postId":props.data._id,"userId":state.user._id,"postmessage":comment};
+         const res = await publicRequest.post('/comment/create',comm);
+         console.log(comments);
+         setComment('');
+       }catch(err){
+         console.log(err);
+       }
+     }
+     postcomment();
   }
   return (
     <Card className={classes.root}>
       <CardHeader
         avatar={
-          <Avatar aria-label="recipe" className={classes.avatar}>
-            R
+          <Avatar alt={state.user.email} className={classes.avatar} src="https://images.pexels.com/photos/7235677/pexels-photo-7235677.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
+          >
           </Avatar>
         }
         action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon onClick={()=>props.delete(props.id)}/>
+          <IconButton aria-label="settings" onClick={()=>props.delete(props.data._id)}>
+            <Delete className={classes.deletebtn}/>
           </IconButton>
         }
-        title="Shrimp and Chorizo Paella"
+        title={state.user.email}
         subheader="September 14, 2016"
       />
       <CardMedia
@@ -82,13 +124,12 @@ export default function RecipeReviewCard(props) {
       />
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
-          This impressive paella is a perfect party dish and a fun meal to cook together with your
-          guests. Add 1 cup of frozen peas along with the mussels, if you like.
+          {props.data.des}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
         <IconButton aria-label="add to favorites">
-          <FavoriteIcon className={isLike&&classes.like} onClick={()=>setisLike(!isLike)}/>
+          <FavoriteIcon className={isLike&&classes.like} onClick={handlelike}/>
         </IconButton>
         <IconButton
           className={clsx(classes.expand, {
@@ -104,8 +145,8 @@ export default function RecipeReviewCard(props) {
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent style={{maxHeight:"100px",
       overflow:"auto"}}>
-        {comments.map((item)=>{
-          return (<Comment data={item}/>);
+        {comments.map((item,index)=>{
+          return (<Comment data={item} key={index}/>);
         })}  
         </CardContent>
         <InputBase placeholder="comments" value={comment} onChange={(e)=>setComment(e.target.value)} placeholder="Put Your comment"></InputBase>

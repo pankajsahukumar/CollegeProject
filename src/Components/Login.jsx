@@ -45,12 +45,14 @@ const LoginForm = () => {
  const user={email,password};
      login(dispatch,user);
    if(islogin){
-     toast.success("Successfully");
      history.push('/home');
-   }else{
-     toast.error("error");
    }
     }
+    useEffect(()=>{
+      if(islogin){
+        history.push('/home');
+      }
+    },[islogin])
   return (
     <form className={classes.root} onSubmit={handleSubmit}>
       

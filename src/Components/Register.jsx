@@ -3,6 +3,7 @@ import { makeStyles, Paper } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { publicRequest } from '../redux2/requestMethods';
+import { useHistory } from 'react-router';
 
 const useStyles = makeStyles(theme => ({
   paper:{
@@ -30,24 +31,26 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Form = () => {
+  const history = useHistory();
   const classes = useStyles();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [fname,setFname]=useState('');
   const [values, setValues] = useState({});
   const handleonchange=(e)=>{
   setValues((values)=>({...values,[e.target.name]:e.target.value}));
-  console.log(values);
   }
   const handleSubmit = e => {
     e.preventDefault();
-    const user={email,password};
+    console.log(values);
+    const email=values.email;
+    const password=values.password;
+const user={email,password};
 const registeruser=async(user)=>{
+  try{
     const res =await publicRequest.post('Auth/register',user);
-    console.log(res.data);
-    return res.data;
+  }catch(err){
+    console.log(err);
+  }
 }
-  registeruser(user);
+registeruser(user);
   };
 
   return (

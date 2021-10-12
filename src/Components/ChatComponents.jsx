@@ -1,7 +1,9 @@
-import { Paper,makeStyles, InputBase, TextareaAutosize, Hidden, Avatar, Button } from '@material-ui/core'
-import React, { useState } from 'react'
+import { Paper,List,makeStyles,TextareaAutosize, Hidden, Button } from '@material-ui/core'
+import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux';
+import { publicRequest } from '../redux2/requestMethods';
 import Chat from './Chat';
-import Leftside from './Leftside';
+import Chatleft from './Chatleft'
 const useStyles = makeStyles(theme=>({
     container:{
     display:"flex",
@@ -30,45 +32,86 @@ paper2:{
     display:"flex",
     height:"65px",
     maxHeight:'auto',
-    backgroundColor:"black",
+    backgroundColor:"white",
     justifyItems:"center",
+}, left:{
+    flex:"3",
+    position:"sticky",
+    top:0,
+    left:0,
+    height:`calc(100vh - 70px)`,
+    backgroundColor:theme.palette.background.paper,
+    overflow:"auto",
+    maxHeight: `calc(100vh - 70px)`,
 }
 }));
 export const ChatComponents = () => {
     const classes = useStyles();
     const [msg, setMsg] = useState("");
     const [Megs, setMegs] = useState([]);
-    const apend =()=>{
+    const [conversations, setConversations] = useState([]);
+    const [currentChat, setCurrentChat] = useState(null);
+    const state = useSelector(state => state.user2.currentUser);
+    const startchat=(id)=>{
+     setCurrentChat(id);
+    }
+    useEffect(() => {
+        const getconversation=async()=>{
+            try{
+        console.log(state._id)
+        const res=await publicRequest.get('coversation/'+state.user._id);
+        console.log(res.data);
+        setConversations(res.data);
+        }catch(err){
+            console.log(err);
+        }}
+        getconversation();
+    }, []);
+    useEffect(() => {
+        const allchat=async()=>{
+            try{
+        const res=await publicRequest.get('Chat/'+currentChat);
+        setMegs(res.data);
+        }catch(err){
+            console.log(err);
+        }}
+        allchat();
+    }, [currentChat]);
+    
+    const apend =async()=>{
         setMegs((prev)=>[...prev,msg]);
-        setMsg('');
+      const data={ConversationId:currentChat,
+      SenderId:state.user._id,
+      message:msg};
+       try{
+           const res=await publicRequest.post('Chat',data);
+           console.log(res.data);
+       }catch(err){
+           console.log(err);
+       }
     }
     return (
         <div className={classes.container}>
+        <div className={classes.left}>
         <Hidden smDown>
-         <Leftside/>
+            <List>
+            {conversations.map((item)=>{
+                return (<Chatleft conv={item} start={startchat} key={item._id} currentUser={state.user}/>)
+            })}
+            </List> 
         </Hidden>
+        </div>
         <div className={classes.chatareawrappper}>
-          <Paper className={classes.paper}>
-              
-              <Chat show={false}/>
-              <Chat show={true}/>
-              <Chat show={false}/>
-              <Chat show={true}/>
-              <Chat show={false}/>
-              <Chat show={true}/>
-              <Chat show={false}/>
-              <Chat show={true}/>
-              <Chat show={false}/>
-              <Chat show={true}/>
-              <Chat show={false}/>
-              <Chat show={true}/>
+            {currentChat?
+          (<><Paper className={classes.paper}>
               {Megs.map((item)=>{
-                  return(<Chat show={false} msg={item}/>)
+                  return(<Chat show={state.user._id} msg={item}/>)
               })}
          </Paper>
-         <Paper className={classes.paper2} square> 
+         <Paper  square> 
          <TextareaAutosize aria-label="minimum height" value={msg} onChange={(e)=>setMsg(e.target.value)} minRows={1} maxRows={2} className={classes.texarea} placeholder="Minimum 3 rows" /> 
-         <Button onClick={apend}>send</Button></Paper> </div>
+         <Button color="primary" onClick={apend}>send</Button></Paper></>) :(<span>Nothing to display</span>)}
+         </div>
         </div>
     )
 }

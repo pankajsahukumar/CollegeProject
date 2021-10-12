@@ -3,6 +3,7 @@ import React from 'react'
 const useStyles =makeStyles(theme=>({
     container:{
         marginTop:theme.spacing(2),
+        marginBottom:theme.spacing(2),
 },
 wrapper:{
 display:"flex",
@@ -35,10 +36,10 @@ export default function Chat(props) {
         <>
         <Container className={classes.container}>
        <div className={classes.wrapper}>
-        <Avatar>A</Avatar>
+        <Avatar></Avatar>
           <Paper className={classes.paper} square>
-             {props.msg}
-              <span className={classes.time}>9:40mm</span>
+             {props.msg?.message}
+              <span className={classes.time}>9:40Pm</span>
           </Paper>  
           </div>
           </Container>

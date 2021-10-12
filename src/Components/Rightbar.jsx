@@ -1,8 +1,11 @@
-import { Avatar, List, ListItem, ListItemAvatar, ListItemText, makeStyles, Paper } from '@material-ui/core'
+import {  makeStyles, Paper } from '@material-ui/core'
 import React from 'react'
 const useStyles = makeStyles(theme=>({
     right:{
         flex:3,
+        position:"static",
+        top:'70px',
+        right:'0',
     },
     paper:{
         width:"125px",
@@ -20,20 +23,12 @@ export default function Rightbar() {
             gap:"5px",}}>
                 {array.map(item=>{
                 return (<Paper className={classes.paper} key={item}>
-                    <img src="#" alt={item} style={{width:"100%",height:"100%"}}></img>
+                    <img src="https://th.bing.com/th/id/OIP.giClJdwXqhIiFSj2eVBU-QHaEo?pid=ImgDet&rs=1" style={{position:"cover",backgroundPosition:"cover"}} alt={item} style={{width:"100%",height:"100%"}}></img>
                 </Paper>);    
                 })}
             
             
             </div>
-            <List>
-                <ListItem>
-                <ListItemAvatar>
-                    <Avatar>N</Avatar>
-                </ListItemAvatar>
-                <ListItemText primary="Nishant"></ListItemText>
-                </ListItem>
-            </List>
         </div>
     )
 }

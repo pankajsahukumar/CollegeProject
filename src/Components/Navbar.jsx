@@ -2,35 +2,25 @@ import React, { useState } from "react";
 import {useSelector} from 'react-redux'
 import { NavLink,useHistory } from "react-router-dom";
 import "./Navbar.css";
-import { Avatar, Toolbar,AppBar,Typography, Box, Modal } from "@material-ui/core";
+import { Avatar, Toolbar,AppBar,Typography, Box, Modal, TextField, Button } from "@material-ui/core";
 import { ClearRounded, DehazeRounded } from "@material-ui/icons";
 import { useDispatch } from "react-redux";
 import { LogOut } from "../redux2/apiCalls/userapi";
 import { toast } from "react-toastify";
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-};
+import { publicRequest } from "../redux2/requestMethods";
+
 function NavBar() {
   const [open,setOpen]=useState(false);
   const [clicked, setClicked] = useState(false);
  const islogin = useSelector(state => state.user2.islogin);
+ 
+ const state = useSelector(state => state.user2.currentUser)
  const history =useHistory();
  const dispatch=useDispatch();
   const handleClick = () => {
     setClicked(!clicked);
   };
 
-  const handleClose=()=>{
-    console.log("how");
-  }
   const hanglelogout=()=>{
   LogOut(dispatch);
   toast.success("Successfully Logout");
@@ -42,7 +32,7 @@ function NavBar() {
         <div className="nav-container">
           <NavLink exact to='#' className="nav-logo">
             {/* <i className="fas fa-code"></i> */}
-            {islogin?<Avatar to='/about'/>:<Typography 
+            {islogin?<Avatar onClick={(e)=>(history.push('/home'))}/>:<Typography 
             component="h1" variant='h6'>Pankaj</Typography>}
           </NavLink>
 
@@ -62,10 +52,10 @@ function NavBar() {
             <li className="nav-item">
               <NavLink
                 exact
-                to="/about"
+                to="/createpost"
                 activeClassName="active"
                 className="nav-links"
-                onClick={()=>setOpen(!open)}
+                // onClick={()=>setOpen(!open)}
               >
                 Create Post
               </NavLink>
@@ -131,14 +121,6 @@ function NavBar() {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Create your Post
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </Typography>
-        </Box>
       </Modal>
     </>
   );
